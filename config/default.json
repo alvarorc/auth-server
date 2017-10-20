@@ -1,0 +1,6 @@
+{
+  "dbconfig": {
+    "host": "mongodb://localhost",
+    "dbname": "auth-server"
+  }
+}
