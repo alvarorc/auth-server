@@ -1,15 +1,23 @@
 import { makeExecutableSchema } from 'graphql-tools';
-import User from './user';
+import User, { findUserByUserName, createUser, findUsers } from './user';
 
 const RootQuery = `
   type RootQuery {
-    user(id: ID!): User
+    findUserByUserName(username: String!): User
+    findUsers: [User]
+  }
+`;
+
+const Mutation = `
+  type Mutation {
+    createUser(username: String!, email: String!, password: String!, firstName: String!, lastName: String!, phoneNumber: String, role: String): User!
   }
 `;
 
 const SchemaDefinition = `
   schema {
-    query: RootQuery
+    query: RootQuery,
+    mutation: Mutation
   }
 `;
 
@@ -17,21 +25,16 @@ export default makeExecutableSchema({
   typeDefs: [
     SchemaDefinition,
     RootQuery,
+    Mutation,
     User,
   ],
   resolvers: {
     RootQuery: {
-      user: (parent, args) => {
-        console.log(parent, args);
-        return {
-          id: args.id,
-          username: 'alvaro.rc',
-          firstName: 'alvaro',
-          lastName: 'rago',
-          password: 'ascjascnj',
-          email: 'alvarorc.sistemas@gmail.com',
-        };
-      },
+      findUserByUserName,
+      findUsers,
+    },
+    Mutation: {
+      createUser,
     },
   },
 });
