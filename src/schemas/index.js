@@ -1,10 +1,12 @@
 import { makeExecutableSchema } from 'graphql-tools';
-import User, { findUserByUserName, createUser, findUsers } from './user';
+import resolvers from './resolvers';
+import User from './user';
 
 const RootQuery = `
   type RootQuery {
-    findUserByUserName(username: String!): User
-    findUsers: [User]
+    user(username: String!): User!
+    users: [User!]!
+    auth(username: String!, password: String!): String!
   }
 `;
 
@@ -28,13 +30,5 @@ export default makeExecutableSchema({
     Mutation,
     User,
   ],
-  resolvers: {
-    RootQuery: {
-      findUserByUserName,
-      findUsers,
-    },
-    Mutation: {
-      createUser,
-    },
-  },
+  resolvers,
 });

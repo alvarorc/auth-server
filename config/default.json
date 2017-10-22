@@ -2,5 +2,7 @@
   "dbconfig": {
     "host": "mongodb://localhost",
     "dbname": "auth-server"
-  }
+  },
+  "secret": "ST2xm5RrRZiQwPTJfqLvyWFaEzY3DD0i",
+  "pretype": "Bearer"
 }

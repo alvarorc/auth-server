@@ -1,3 +1,4 @@
+import { signtoken } from '../authorization';
 import UserModel from '../models/user';
 
 const User = `
@@ -13,10 +14,23 @@ const User = `
   }
 `;
 
-export const findUsers = () => UserModel.findAsync({});
+export const resolvers = {
+  RootQuery: {
+    users: () => UserModel.findAsync({}),
+    user: (parent, { username }) => UserModel.findOneAsync({ username }),
+    auth: async (parent, { username, password }) => {
+      const user = await UserModel.findOneAsync({ username });
+      const hasValidCredentials = (user) ? await user.validatePassword(password) : false;
 
-export const findUserByUserName = (parent, { username }) => UserModel.findOneAsync({ username });
-
-export const createUser = async (parent, args) => (new UserModel(args)).save();
+      if (!hasValidCredentials) {
+        return new Error('Invalid credentials');
+      }
+      return signtoken({ id: user.id });
+    },
+  },
+  Mutation: {
+    createUser: (parent, args) => (new UserModel(args)).save(),
+  },
+};
 
 export default User;

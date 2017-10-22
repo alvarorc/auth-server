@@ -1,0 +1,15 @@
+html
+  head
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css")
+    link(rel="stylesheet", href="/static/style.css")
+
+  body
+    h1.status-title HTTP Status - #{status}
+    hr
+
+    div.content
+      block content
+        p This page doesn't have any content yet.
+    hr
+    footer
+      p #{footer}
